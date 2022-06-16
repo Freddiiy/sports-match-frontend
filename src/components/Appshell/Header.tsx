@@ -1,5 +1,6 @@
-import {Box, Container, Flex, HStack, Text, VStack} from "@chakra-ui/react";
+import {Box, Button, Container, Flex, HStack, Text, VStack} from "@chakra-ui/react";
 import {Link, NavLink} from "react-router-dom";
+import auth from "../../auth/jwt";
 
 export default function Header() {
 	return (
@@ -19,12 +20,15 @@ export default function Header() {
 						<NavLink to={"/players"}>
 							<Text>Players</Text>
 						</NavLink>
+						<NavLink to={"/admin"} >
+							<Text>Admin</Text>
+						</NavLink>
 					</HStack>
 					<Flex alignItems={"center"}>
 						<HStack spacing={5}>
-							<Link to={"/logout"}>
+							<Button onClick={() => auth.logout()}>
 								<Text>Logout</Text>
-							</Link>
+							</Button>
 						</HStack>
 					</Flex>
 				</Flex>

@@ -10,6 +10,7 @@ import Matches from "./pages/matches";
 import {ChakraProvider} from "@chakra-ui/react";
 import Layout from "./components/Appshell/Layout";
 import Home from "./pages/home";
+import Admin from "./pages/admin";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -31,6 +32,7 @@ function AppRoutes() {
 				<Route path={"/"} element={<App/>} >
 					<Route index element={<Home />} />
 					<Route path={"/matches"} element={<Matches/>} />
+					<Route path={"/admin"} element={<Admin />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

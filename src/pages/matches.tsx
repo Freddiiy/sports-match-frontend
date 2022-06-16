@@ -1,7 +1,7 @@
 import {ChangeEvent, useContext, useEffect, useState} from "react";
 import axios from "axios";
-import {URL} from "../auth/jwt";
-import {IMatches} from "../utils/types";
+import auth, {URL} from "../auth/jwt";
+import {ICreateMatch, IMatches} from "../utils/types";
 import {
 	Box,
 	Button,
@@ -14,21 +14,23 @@ import {
 	useDisclosure,
 	UseDisclosureProps,
 	VStack,
-	Text,
+	Text, SimpleGrid,
 } from "@chakra-ui/react";
 import MatchComponent from "../components/MatchComponent";
 import {AddIcon} from "@chakra-ui/icons";
 import {Input, InputGroup} from "@chakra-ui/input";
 import {Simulate} from "react-dom/test-utils";
 import submit = Simulate.submit;
+import {useNavigate} from "react-router";
 
 export default function Matches() {
 	const [matches, setMatches] = useState<IMatches[]>();
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const navigate = useNavigate()
 	const [modalError, setModalError] = useState("");
 	const [form, setForm] = useState({
 		matchName: "",
-		sportType: "",
+		sportsType: "",
 		inDoors: false,
 		address: "",
 		city: "",
@@ -61,18 +63,17 @@ export default function Matches() {
 	}
 
 	function handleSubmit() {
-		axios.post(URL + "/match/create", {
-			...form
-		})
-			.then((res) => {
-				if (res.status == 200) {
-					onClose()
-				}
-
-				if (res.status == 500) {
-					setModalError("Der skete en fejl, prøv igen.");
-				}
-			})
+		const data: ICreateMatch = {
+			matchName: form.matchName,
+			sportsType: form.sportsType,
+			inDoors: form.inDoors,
+			location: {
+				address: form.address,
+				city: form.city
+			}
+		}
+		auth.createMatch(data)
+			.then(() => navigate("/matches"));
 	}
 
 	return (
@@ -91,9 +92,11 @@ export default function Matches() {
 				</Box>
 			</Center>
 			<Center>
-				{matches?.map((match, key) => (
-					<MatchComponent key={key} match={match}/>
-				))}
+				<SimpleGrid>
+					{matches?.map((match, key) => (
+						<MatchComponent key={key} match={match}/>
+					))}
+				</SimpleGrid>
 			</Center>
 
 			<Center>
@@ -108,8 +111,8 @@ export default function Matches() {
 							<VStack py={5} alignItems={"flex-start"}>
 								<Input placeholder={"Kampnavn"} name={"matchName"} onChange={handleChange}
 									   value={form.matchName} required/>
-								<Input placeholder={"Sportsgræn"} name={"sportType"} onChange={handleChange}
-									   value={form.sportType} required/>
+								<Input placeholder={"Sportsgræn"} name={"sportsType"} onChange={handleChange}
+									   value={form.sportsType} required/>
 								<HStack>
 									<Input placeholder={"Adresse"} name={"address"} onChange={handleChange}
 										   value={form.address} required/>

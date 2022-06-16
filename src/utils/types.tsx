@@ -8,6 +8,16 @@ export interface IMatches {
 	location:   Location;
 }
 
+export interface ICreateMatch {
+	matchName: string,
+	sportsType: string,
+	inDoors: boolean,
+	location: {
+		address: string,
+		city: string,
+	},
+}
+
 export interface Team {
 	id:          number;
 	username:    string;

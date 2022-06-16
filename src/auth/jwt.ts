@@ -1,6 +1,7 @@
 import jwt from 'jwt-decode'
+import {ICreateMatch, IMatches} from "../utils/types";
 
-export const URL = "https//sem3.fredoku.com";
+export const URL = "https://sem3.fredoku.com/matches"
 
 interface IJtwToken {
 	roles?: string[];
@@ -65,6 +66,39 @@ function apiFacade() {
 			.then(handleHttpErrors);
 	}
 
+	const createMatch = (matchData: any) => {
+		const options = makeOptions("POST", true, matchData);
+		return fetch(URL + "/api/matches/create", options)
+			.then(handleHttpErrors)
+			.then((res) => {
+				setToken(res.token)
+			})
+	}
+
+	const addPlayerToHomeTeam = (username: string, matchId: number) => {
+		const options = makeOptions("POST", true, {
+			username: username,
+			matchId: matchId,
+		});
+		return fetch(URL + "/api/matches/add-to-home", options)
+			.then(handleHttpErrors)
+			.then((res) => {
+				setToken(res.token)
+			})
+	}
+
+	const addPlayerToAwayTeam = (username: string, matchId: number) => {
+		const options = makeOptions("POST", true, {
+			username: username,
+			matchId: matchId,
+		});
+		return fetch(URL + "/api/matches/add-to-away", options)
+			.then(handleHttpErrors)
+			.then((res) => {
+				setToken(res.token)
+			})
+	}
+
 	const fetchData = () => {
 		const options = makeOptions("GET", true); //True add's the token
 
@@ -75,7 +109,7 @@ function apiFacade() {
 		}
 	};
 
-	const makeOptions = (method: string, addToken: boolean, body?: IJtwToken) => {
+	const makeOptions = (method: string, addToken: boolean, body?: any) => {
 		let opts: any = {
 			method: method,
 			headers: {
@@ -103,7 +137,10 @@ function apiFacade() {
 		login,
 		logout,
 		createUser,
-		fetchData
+		fetchData,
+		createMatch,
+		addPlayerToHomeTeam,
+		addPlayerToAwayTeam,
 	};
 }
 
