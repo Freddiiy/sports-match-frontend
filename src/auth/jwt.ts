@@ -1,6 +1,6 @@
 import jwt from 'jwt-decode'
 
-export const URL = "http://localhost:8080";
+export const URL = "https//sem3.fredoku.com";
 
 interface IJtwToken {
 	roles?: string[];
