@@ -2,6 +2,7 @@ import jwt from 'jwt-decode'
 import {ICreateMatch, IMatches} from "../utils/types";
 
 export const URL = "https://sem3.fredoku.com/matches"
+//export const URL = "http://localhost:8080"
 
 interface IJtwToken {
 	roles?: string[];

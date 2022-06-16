@@ -5,7 +5,7 @@ import auth from "../auth/jwt";
 import {useNavigate} from "react-router";
 import {Link} from "react-router-dom";
 
-export default function Login() {
+export default function Register() {
 	let navigate = useNavigate();
 	const [errorMsg, setErrorMsg] = useState("")
 	const [form, setForm] = useState({
@@ -21,14 +21,13 @@ export default function Login() {
 		});
 	}
 
-
 	function handleSubmit(event: SyntheticEvent) {
 		event.preventDefault()
 		if (form.username === "" || form.password === "") {
 			setErrorMsg("Error with form")
 		}
 
-		auth.login(form.username, form.password)
+		auth.createUser(form.username, form.password)
 			.then(() => {
 				auth.getToken();
 				navigate("/", {replace: true})
@@ -40,7 +39,7 @@ export default function Login() {
 		<>
 			<Center>
 				<Box borderWidth={"1px"} borderColor={"black"} p={10} m={3} rounded={"2xl"} shadow={"xl"}>
-					<Text fontSize={"2xl"} mb={4}>Log ind</Text>
+					<Text fontSize={"2xl"} mb={4}>Registrer</Text>
 					<InputGroup size={"sm"} onSubmit={handleSubmit}>
 						<VStack>
 							<Input placeholder={"Username"} name={"username"} onChange={handleChange}
@@ -49,7 +48,7 @@ export default function Login() {
 								   value={form.password}/>
 							<HStack>
 
-								<Text>Ingen konto?</Text><Link to={"/register"}><Text>Registrer her!</Text></Link>
+								<Text>Har du allerede en konto?</Text><Link to={"/login"}><Text>Login her</Text></Link>
 							</HStack>
 							<Button width={"full"} type={"submit"} color={"black"}
 									onClick={handleSubmit}>Submit</Button>
